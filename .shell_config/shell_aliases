@@ -33,6 +33,10 @@ alias cls='clear'
 
 # Common commands shortened
 alias S='sudo '
+alias ...='../..'
+alias ....='../../..'
+alias .....='../../../..'
+alias ......='../../../../..'
 
 # File permissions
 alias Sx='sudo chmod +x '
