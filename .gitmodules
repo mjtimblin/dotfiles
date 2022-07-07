@@ -1,0 +1,9 @@
+[submodule ".zsh_custom/plugins/git-open"]
+	path = .zsh_custom/plugins/git-open
+	url = https://github.com/paulirish/git-open.git
+[submodule ".zsh_custom/plugins/you-should-use"]
+	path = .zsh_custom/plugins/you-should-use
+	url = https://github.com/MichaelAquilina/zsh-you-should-use.git
+[submodule ".zsh_custom/plugins/zsh-autosuggestions"]
+	path = .zsh_custom/plugins/zsh-autosuggestions
+	url = https://github.com/zsh-users/zsh-autosuggestions.git

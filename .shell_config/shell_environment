@@ -1,0 +1,40 @@
+export EDITOR=vim  # Set default editor (for crontab)
+export LDFLAGS=""
+export CPPFLAGS=""
+
+# OS / Platform
+uname_output="$(uname -s)"
+case "${uname_output}" in
+  Linux*)  platform=linux;;
+  Darwin*) platform=macos;;
+  CYGWIN*) platform=cygwin;;
+  MINGW*)  platform=mingw;;
+  *)       platform="unknown:${uname_output}"
+esac
+export PLATFORM="$platform"
+
+# Console Do Not Track (https://consoledonottrack.com)
+export DO_NOT_TRACK=1
+
+# ZSH
+export ZSH_PLUGIN_DIR="$HOME/.zsh_custom/plugins"
+export ZSH_THEME_DIR="$HOME/.zsh_custom/themes"
+
+# NVM
+export NVM_DIR="$HOME/.nvm"
+
+# Homebrew
+export HOMEBREW_PREFIX="/home/linuxbrew/.linuxbrew"
+export HOMEBREW_CELLAR="$HOMEBREW_PREFIX/Cellar"
+export HOMEBREW_REPOSITORY="$HOMEBREW_PREFIX/Homebrew"
+export HOMEBREW_GITHUB_API_TOKEN=""                     # Define in "~/.shell_local"
+export HOMEBREW_NO_ANALYTICS=1
+
+# pyenv
+export PYENV_ROOT="$HOME/.pyenv"
+
+# HSTR
+export HSTR_CONFIG=hicolor
+
+export PROJECTS_DIR=""  # Define in "~/.shell_local"
+

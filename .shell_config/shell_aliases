@@ -1,0 +1,101 @@
+# ----------- START FUNCTIONS ---------
+
+
+# ----------- START ALIASES -----------
+
+# Grep (use `brew install grep` on macOS first)
+if [ $PLATFORM = "macos" ]; then
+  alias grep='ggrep'
+fi
+
+# ls related (with and without color)
+if [ -x /usr/bin/dircolors ]; then
+	alias ls='ls --color=auto'
+	alias ll='ls -alF --color=auto'
+	alias la='ls -A --color=auto'
+	alias l='ls -CF --color=auto'
+	alias dir='dir --color=auto'
+	alias vdir='vdir --color=auto'
+
+	alias grep='grep --color=auto'
+	alias fgrep='fgrep --color=auto'
+	alias egrep='egrep --color=auto'
+else
+	alias ll='ls -alF'
+	alias la='ls -A'
+	alias l='ls -CF'
+fi
+
+# Common typos
+alias celar='clear'
+alias clr='clear'
+alias cls='clear'
+
+# Common commands shortened
+alias S='sudo '
+
+# File permissions
+alias Sx='sudo chmod +x '
+
+# Common actions
+alias go-back='cd ${OLDPWD}'
+alias ccat='pygmentize -g'
+
+# Copy/Paste
+if [ $PLATFORM = "linux" ]; then
+	alias copy='xclip -selection clipboard'
+	alias paste='xclip -selection cliboard -o'
+elif [ $PLATFORM = "macos" ]; then
+	alias copy='pbcopy'
+	alias paste='echo $(pbpaste)'
+fi
+
+# Git
+alias gop='git-open'
+alias git-hash-long='git rev-parse HEAD'
+alias git-hash-short='git rev-parse --short HEAD'
+alias git-hash='git-hash-long'
+alias ghl='git-hash-long'
+alias ghs='git-hash-short'
+alias git-branch-current='git rev-parse --abbrev-ref HEAD'
+alias gbc='git-branch-current'
+alias git-branch-publish='git push -u origin $(git rev-parse --abbrev-ref HEAD)'
+alias gbp='git-branch-publish'
+alias git-branch-remote='echo -e "\033[1;31m" && git ls-remote -q | grep --color=never -oP "(?<=refs\/heads\/)([a-zA-Z0-9\-\_\/]+)$" && echo -e "\033[0m"'
+alias gbr='git-branch-remote'
+
+# React Native related
+alias refresh-rn-android='adb shell input text "RR"'
+
+# Python related
+alias python='python3'
+
+# Head/Tail
+alias hf='head -n 50 -f'
+alias tf='tail -n 50 -f'
+
+# Composer (PHP)
+alias composer='php /usr/local/bin/composer.phar'
+
+# Docker/Docker Compose
+alias dps='docker ps -a'
+alias dsc='echo "Stopping following containers..." && docker stop $(docker ps -aq)'
+alias drc='echo "Removing following containers..." && docker rm $(docker ps -aq)'
+alias dc='docker-compose'
+
+# Google chrome
+if [ $PLATFORM = "linux" ]; then
+	alias chrome='google-chrome'
+elif [ $PLATFORM = "macos" ]; then
+	alias chrome='/Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome'
+fi
+
+# HSTR
+alias hh=hstr
+
+# Disk Usage
+alias disk_usage='df -h $(mount -t ext4,fuseblk | grep rw | cut -d" " -f1)'
+
+# Path shortcuts
+alias cdp='cd "$PROJECTS_DIR"'
+
