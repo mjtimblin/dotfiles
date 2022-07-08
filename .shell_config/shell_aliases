@@ -75,8 +75,8 @@ alias refresh-rn-android='adb shell input text "RR"'
 alias python='python3'
 
 # Head/Tail
-alias hf='head -n 50 -f'
-alias tf='tail -n 50 -f'
+alias hf='head -n 50'
+alias tf='tail -n 50'
 
 # Composer (PHP)
 alias composer='php /usr/local/bin/composer.phar'
