@@ -7,6 +7,7 @@
 setopt extendedglob
 setopt auto_cd
 setopt share_history
+setopt hist_ignore_dups
 
 HISTFILE=$HOME/.zsh_history
 HISTSIZE=1000
