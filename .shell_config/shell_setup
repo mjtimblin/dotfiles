@@ -27,5 +27,6 @@ if command -v pyenv 1>/dev/null 2>&1; then
 fi
 
 # HSTR
-bindkey -s "\C-r" "hh -- \n"  # bind hstr to Ctrl-r (for Vi mode check doc)
-
+if command -v bindkey 1>/dev/null 2>&1; then
+    bindkey -s "\C-r" "hh -- \n"  # bind hstr to Ctrl-r (for Vi mode check doc)
+fi
