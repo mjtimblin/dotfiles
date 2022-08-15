@@ -68,6 +68,10 @@ alias gbp='git-branch-publish'
 alias git-branch-remote='echo -e "\033[1;31m" && git ls-remote -q | grep --color=never -oP "(?<=refs\/heads\/)([a-zA-Z0-9\-\_\/]+)$" && echo -e "\033[0m"'
 alias gbr='git-branch-remote'
 
+# Apt
+alias agl='sudo apt list'
+alias aglu='sudo apt list --upgradeable'
+
 # React Native related
 alias refresh-rn-android='adb shell input text "RR"'
 
