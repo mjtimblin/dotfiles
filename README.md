@@ -4,7 +4,7 @@ This repository currently contains dotfiles, config, themes, and plugins for bas
 
 ## Installation
 
-To install, clone the repository and run `bash bin/install.sh`
+To install, clone the repository and run `./bin/install.sh`
 
 ## Updating Config
 
@@ -25,7 +25,7 @@ To update shared config:
 
 - Make the changes to the proper file in the repository (most changes will probably be in the `.shell_config` directory)
 - Commit and push the changes using git
-- Run `bash bin/install.sh`
+- Run `./bin/install.sh`
 - Re-open the terminal for changes to take effect
 
 Note: Never include secrets in shared config. Instead use a placeholder or empty string in the shared config, and overwrite the value using local config.
