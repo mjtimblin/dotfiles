@@ -104,6 +104,9 @@ alias hh=hstr
 # Disk Usage
 alias disk_usage='df -h $(mount -t ext4,fuseblk | grep rw | cut -d" " -f1)'
 
+# Download Bing Wallpaper of the Day (requires curl)
+alias download_wallpaper='curl -s -o "$WALLPAPER_FILEPATH" "https://bing.com$(curl -s "https://www.bing.com/HPImageArchive.aspx?format=js&idx=0&n=1&mkt=en-US" | jq -r ".images[0] | .url")"'
+
 # Path shortcuts
 alias cdp='cd "$PROJECTS_DIR"'
 
