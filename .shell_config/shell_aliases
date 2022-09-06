@@ -110,3 +110,6 @@ alias download_wallpaper='curl -s -o "$WALLPAPER_FILEPATH" "https://bing.com$(cu
 # Path shortcuts
 alias cdp='cd "$PROJECTS_DIR"'
 
+# Glow (https://github.com/charmbracelet/glow)
+alias md='glow'
+
