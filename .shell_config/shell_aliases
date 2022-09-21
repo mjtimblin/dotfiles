@@ -38,6 +38,9 @@ alias ....='../../..'
 alias .....='../../../..'
 alias ......='../../../../..'
 
+# mkdir
+alias md='mkdir -p'
+
 # File permissions
 alias Sx='sudo chmod +x '
 
@@ -111,5 +114,5 @@ alias download_wallpaper='curl -s -o "$WALLPAPER_FILEPATH" "https://bing.com$(cu
 alias cdp='cd "$PROJECTS_DIR"'
 
 # Glow (https://github.com/charmbracelet/glow)
-alias md='glow'
+alias catmd='glow'
 
