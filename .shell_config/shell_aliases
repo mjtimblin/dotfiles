@@ -1,5 +1,8 @@
 # ----------- START FUNCTIONS ---------
 
+function print_line() {
+	head -n $1 $2 | tail -n 1
+}
 
 # ----------- START ALIASES -----------
 
