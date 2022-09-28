@@ -1,5 +1,8 @@
 # ----------- START FUNCTIONS ---------
 
+# This function prints a specific line number from a file
+# $1 line number
+# $2 filepath
 function print_line() {
 	head -n $1 $2 | tail -n 1
 }
