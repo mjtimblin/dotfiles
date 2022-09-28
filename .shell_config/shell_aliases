@@ -4,7 +4,7 @@
 # $1 line number
 # $2 filepath
 function print_line() {
-	head -n $1 $2 | tail -n 1
+	sed "${1}q;d" "$2"
 }
 
 # ----------- START ALIASES -----------
