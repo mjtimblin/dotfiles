@@ -31,8 +31,8 @@ export HOMEBREW_GITHUB_API_TOKEN=""                     # Define in "~/.shell_lo
 export HOMEBREW_NO_ANALYTICS=1
 
 # Android
-export ANDROID_HOME="$HOME/Android/Sdk"       # For MacOS this may need to be overridden in "~/.shell_local" with "/Users/$USER/Library/Android"
-export ANDROID_AVD_HOME="$HOME/.android/avd"  # For MacOS this may need to be overridden in "~/.shell_local" with "/Users/$USER/.android/avd"
+export ANDROID_HOME="$HOME/Android/Sdk"       # For macOS this may need to be overridden in "~/.shell_local" with "/Users/$USER/Library/Android"
+export ANDROID_AVD_HOME="$HOME/.android/avd"  # For macOS this may need to be overridden in "~/.shell_local" with "/Users/$USER/.android/avd"
 
 # pyenv
 export PYENV_ROOT="$HOME/.pyenv"
