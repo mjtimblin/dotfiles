@@ -23,6 +23,7 @@ ZSH_PLUGINS=(
   you-should-use       # https://github.com/MichaelAquilina/zsh-you-should-use
   zsh-autosuggestions  # https://github.com/zsh-users/zsh-autosuggestions
   git-open             # https://github.com/paulirish/git-open
+  zsh-nvm              # https://github.com/lukechilds/zsh-nvm
 )
 
 if [[ "$PLATFORM" == "macos" ]]; then
