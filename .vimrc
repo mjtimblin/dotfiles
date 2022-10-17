@@ -86,6 +86,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'itchyny/lightline.vim'
   Plug 'tpope/vim-commentary'
   Plug 'airblade/vim-gitgutter'
+  Plug 'editorconfig/editorconfig-vim'
 
   " Themes
   Plug 'NLKNguyen/papercolor-theme'
