@@ -21,6 +21,11 @@ unset __conda_setup
 [[ ! -f "$NVM_DIR/bash_completion" ]] || source "$NVM_DIR/bash_completion"
 
 
+# luarocks (Lua package manager)
+if command -v luarocks 1>/dev/null 2>&1; then
+    eval "$(luarocks path)"
+fi
+
 # pyenv
 if command -v pyenv 1>/dev/null 2>&1; then
     eval "$(pyenv init -)"
