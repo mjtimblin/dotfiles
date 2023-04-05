@@ -76,6 +76,8 @@ alias git-branch-publish='git push -u origin $(git rev-parse --abbrev-ref HEAD)'
 alias gbp='git-branch-publish'
 alias git-branch-remote='echo -e "\033[1;31m" && git ls-remote -q | grep --color=never -oP "(?<=refs\/heads\/)([a-zA-Z0-9\-\_\/]+)$" && echo -e "\033[0m"'
 alias gbr='git-branch-remote'
+alias git-remove-merged-branches='git branch --merged | egrep -v "(^\*|master|main|develop)" | xargs git branch -d'
+alias grmmb='git-remove-merged-branches'
 
 # Apt
 alias agl='sudo apt list'
