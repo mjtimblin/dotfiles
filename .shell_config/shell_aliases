@@ -94,7 +94,7 @@ alias hf='head -n 50'
 alias tf='tail -n 50'
 
 # Composer (PHP)
-alias composer='php /usr/local/bin/composer.phar'
+alias composer='XDEBUG_MODE=off php /usr/local/bin/composer.phar'
 
 # Docker/Docker Compose
 alias dps='docker ps -a'
