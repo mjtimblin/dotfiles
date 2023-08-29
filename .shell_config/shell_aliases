@@ -126,3 +126,6 @@ alias cdp='cd "$PROJECTS_DIR"'
 # Glow (https://github.com/charmbracelet/glow)
 alias catmd='glow'
 
+# epubcheck (https://www.w3.org/publishing/epubcheck/)
+alias epubcheck='java -jar /opt/epubcheck/epubcheck.jar '
+
