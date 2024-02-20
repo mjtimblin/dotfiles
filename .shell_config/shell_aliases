@@ -97,7 +97,7 @@ alias tf='tail -n 50'
 alias composer='XDEBUG_MODE=off php /usr/local/bin/composer.phar'
 
 # Docker/Docker Compose
-alias docker='podman'
+# alias docker='podman'
 alias dps='docker ps -a'
 alias dsc='echo "Stopping following containers..." && docker stop $(docker ps -aq)'
 alias drc='echo "Removing following containers..." && docker rm $(docker ps -aq)'
