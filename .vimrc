@@ -65,6 +65,13 @@ set tabstop=3
 set shiftwidth=1
 set expandtab!
 
+" Set backup and swap directories
+set backupdir=~/.vim/tmp//,.
+set directory=~/.vim/tmp//,.
+
+" Backup setting
+set backup
+
 " }}}
 
 
