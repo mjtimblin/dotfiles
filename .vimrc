@@ -66,8 +66,10 @@ set shiftwidth=1
 set expandtab!
 
 " Set backup and swap directories
-set backupdir=~/.vim/tmp//,.
-set directory=~/.vim/tmp//,.
+silent !mkdir ~/.vim/backups > /dev/null 2>&1
+silent !mkdir ~/.vim/swap > /dev/null 2>&1
+set backupdir=~/.vim/backups
+set directory=~/.vim/swap
 
 " Backup setting
 set backup
