@@ -14,12 +14,15 @@ if [[ "$(cat ~/.bashrc | grep "~/.bashrc: executed by bash(1) for non-login shel
   mv ~/.bashrc ~/.bash_default
 fi
 
+mkdir -p ~/.config/nvim
+
 # Copy files to home directory
 cp -r .zsh_custom ~
 cp -r .shell_config ~
 cp .bashrc ~
 cp .zshrc ~
 cp .vimrc ~
+cp init.vim ~/.config/nvim/ 
 
 # Create .shell_paths and .shell_local if they don't exist
 touch ~/.shell_config/shell_paths
