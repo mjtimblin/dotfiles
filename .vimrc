@@ -65,15 +65,6 @@ set tabstop=3
 set shiftwidth=1
 set expandtab!
 
-" Set backup and swap directories
-silent !mkdir ~/.vim/backups > /dev/null 2>&1
-silent !mkdir ~/.vim/swap > /dev/null 2>&1
-set backupdir=~/.vim/backups
-set directory=~/.vim/swap
-
-" Backup setting
-set backup
-
 " }}}
 
 
@@ -96,6 +87,7 @@ call plug#begin('~/.vim/plugged')
   Plug 'tpope/vim-commentary'
   Plug 'airblade/vim-gitgutter'
   Plug 'editorconfig/editorconfig-vim'
+  Plug 'dezza/vimdirs.vim'
 
   " Themes
   Plug 'NLKNguyen/papercolor-theme'
