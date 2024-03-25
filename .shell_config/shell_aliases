@@ -130,3 +130,6 @@ alias catmd='glow'
 # epubcheck (https://www.w3.org/publishing/epubcheck/)
 alias epubcheck='java -jar /opt/epubcheck/epubcheck.jar '
 
+# oh-my-posh
+alias install_omp='curl -s https://ohmyposh.dev/install.sh | bash -s'
+
