@@ -50,6 +50,9 @@ alias md='mkdir -p'
 # File permissions
 alias Sx='sudo chmod +x '
 
+# rsync
+alias rcp='rsync -avhW --no-compress --info=progress2'
+
 # Common actions
 alias go-back='cd ${OLDPWD}'
 alias ccat='pygmentize -g'
