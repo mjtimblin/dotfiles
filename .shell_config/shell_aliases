@@ -104,7 +104,6 @@ alias composer='XDEBUG_MODE=off php /usr/local/bin/composer.phar'
 alias dps='docker ps -a'
 alias dsc='echo "Stopping following containers..." && docker stop $(docker ps -aq)'
 alias drc='echo "Removing following containers..." && docker rm $(docker ps -aq)'
-alias dc='docker-compose'
 
 # Google chrome
 if [ $PLATFORM = "linux" ]; then
