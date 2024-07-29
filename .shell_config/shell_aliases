@@ -138,3 +138,6 @@ alias install_omp='curl -s https://ohmyposh.dev/install.sh | bash -s'
 # yt-dlp
 alias yt-dlp='docker run --rm -v .:/media --workdir /media jauderho/yt-dlp '
 
+# m4b-tool
+alias yt-dlp='docker run --rm -v .:/media --workdir /media sandreas/m4b-tool '
+
