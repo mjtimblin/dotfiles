@@ -136,7 +136,8 @@ alias epubcheck='java -jar /opt/epubcheck/epubcheck.jar '
 alias install_omp='curl -s https://ohmyposh.dev/install.sh | bash -s'
 
 # yt-dlp
-alias yt-dlp='docker run --rm -v .:/media --workdir /media jauderho/yt-dlp '
+alias yt-dlp='docker run --rm --name "yt-dlp_$(date +%s)" -v .:/media --workdir /media jauderho/yt-dlp '
+alias yt-dlp-upgrade='docker pull jauderho/yt-dlp'
 
 # m4b-tool
 alias m4b-tool='docker run -it --rm -u $(id -u):$(id -g) -v "$(pwd)":/mnt sandreas/m4b-tool '
