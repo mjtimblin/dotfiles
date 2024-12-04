@@ -137,6 +137,10 @@ alias install_omp='curl -s https://ohmyposh.dev/install.sh | bash -s'
 
 # yt-dlp
 alias yt-dlp='docker run --rm --name "yt-dlp_$(date +%s)" -v .:/media --workdir /media jauderho/yt-dlp '
+alias yt-dlp720='yt-dlp -f "bestvideo[height<=720]+bestaudio/best[height<=720]" '
+alias yt-dlp1080='yt-dlp -f "bestvideo[height<=1080]+bestaudio/best[height<=1080]" '
+alias yt-dlp1440='yt-dlp -f "bestvideo[height<=1440]+bestaudio/best[height<=1440]" '
+alias yt-dlp2160='yt-dlp -f "bestvideo[height<=2160]+bestaudio/best[height<=2160]" '
 alias yt-dlp-upgrade='docker pull jauderho/yt-dlp'
 
 # m4b-tool
