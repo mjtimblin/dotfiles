@@ -14,6 +14,12 @@ if [[ "$(cat ~/.bashrc | grep "~/.bashrc: executed by bash(1) for non-login shel
   mv ~/.bashrc ~/.bash_default
 fi
 
+if [ -L ~/.tmux.conf ]; then
+  rm ~/.tmux.conf
+elif [ -f ~/.tmux.conf ]; then
+  mv ~/.tmux.conf ~/.tmux.conf.bak
+fi
+
 mkdir -p ~/.config/nvim
 
 # Copy files to home directory
@@ -23,7 +29,7 @@ cp .bashrc ~
 cp .zshrc ~
 cp .vimrc ~
 cp init.vim ~/.config/nvim/ 
-cp .tmux/.tmux.conf ~
+ln -s $PWD/.tmux/.tmux.conf ~
 cp .tmux.conf.local ~
 
 # Create .shell_paths and .shell_local if they don't exist
