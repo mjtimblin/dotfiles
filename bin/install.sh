@@ -23,6 +23,8 @@ cp .bashrc ~
 cp .zshrc ~
 cp .vimrc ~
 cp init.vim ~/.config/nvim/ 
+cp .tmux/.tmux.conf ~
+cp .tmux.conf.local ~
 
 # Create .shell_paths and .shell_local if they don't exist
 touch ~/.shell_config/shell_paths

@@ -10,3 +10,6 @@
 [submodule ".zsh_custom/plugins/zsh-nvm"]
 	path = .zsh_custom/plugins/zsh-nvm
 	url = https://github.com/lukechilds/zsh-nvm.git
+[submodule ".tmux"]
+	path = .tmux
+	url = https://github.com/gpakosz/.tmux.git
