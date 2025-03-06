@@ -82,6 +82,9 @@ alias gbr='git-branch-remote'
 alias git-remove-merged-branches='git branch --merged | egrep -v "(^\*|master|main|develop)" | xargs git branch -d'
 alias grmmb='git-remove-merged-branches'
 
+# tmux
+alias tm='tmux new -As0'
+
 # Apt
 alias agl='sudo apt list'
 alias aglu='sudo apt list --upgradeable'
