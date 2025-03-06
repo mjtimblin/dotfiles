@@ -84,6 +84,7 @@ alias grmmb='git-remove-merged-branches'
 
 # tmux
 alias tm='tmux new -As0'
+alias tma='tmux attach -t '
 
 # Apt
 alias agl='sudo apt list'
