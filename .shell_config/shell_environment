@@ -42,4 +42,5 @@ export HSTR_CONFIG=hicolor
 
 export PROJECTS_DIR=""  # Define in "~/.shell_local"
 export WALLPAPER_FILEPATH=""  # Define in "~/.shell_local"
+export PATREON_DOWNLOADER_EXECUTABLE="" # Define in "~/.shell_local"
 

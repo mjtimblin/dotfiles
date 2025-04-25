@@ -7,6 +7,23 @@ function print_line() {
 	sed "${1}q;d" "$2"
 }
 
+function download-patreon-user() {
+  username="$1"
+  download_dir="${2%/}"
+  download_if_newer="${3:-default}"
+
+  mkdir -p "$download_dir/$username"
+  cd "$(dirname "$PATREON_DOWNLOADER_EXECUTABLE")"
+
+  if [ $download_if_newer = "default" ]; then
+    $PATREON_DOWNLOADER_EXECUTABLE --url "https://www.patreon.com/$username" --download-directory "$download_dir/$username" --file-exists-action KeepExisting --json
+  else
+    $PATREON_DOWNLOADER_EXECUTABLE --url "https://www.patreon.com/$username" --download-directory "$download_dir/$username" --file-exists-action BackupIfDifferent --json
+  fi
+
+  cd $OLDPWD
+}
+
 # ----------- START ALIASES -----------
 
 # Grep (use `brew install grep` on macOS first)
