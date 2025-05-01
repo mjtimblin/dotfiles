@@ -136,6 +136,9 @@ fi
 # HSTR
 alias hh=hstr
 
+# jbang
+alias j!=jbang
+
 # Disk Usage
 alias disk_usage='df -h $(mount -t ext4,fuseblk | grep rw | cut -d" " -f1)'
 alias dus='du -sh * | sort -hr'
