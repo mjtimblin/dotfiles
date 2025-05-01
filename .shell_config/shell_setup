@@ -35,3 +35,8 @@ fi
 if command -v bindkey 1>/dev/null 2>&1; then
     bindkey -s "\C-r" "hh -- \n"  # bind hstr to Ctrl-r (for Vi mode check doc)
 fi
+
+# SDK Man
+export SDKMAN_DIR="$HOME/.sdkman"
+[[ -s "$HOME/.sdkman/bin/sdkman-init.sh" ]] && source "$HOME/.sdkman/bin/sdkman-init.sh"
+
