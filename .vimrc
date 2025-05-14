@@ -1,3 +1,6 @@
+scriptencoding utf-8
+set encoding=utf-8
+
 " GENERAL SETTINGS --------------------------------------------------------------- {{{
 
 " Disable compatibility with vi which can cause unexpected issues.
@@ -58,7 +61,7 @@ let &t_SI = "\e[6 q"
 let &t_EI = "\e[4 q"
 
 " Show tabs as an arrow and trailing spaces as dots
-set list lcs=tab:→ ,trail:·
+set list lcs=trail:·,tab:»·
 
 " Set default tab size
 set tabstop=3
