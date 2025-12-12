@@ -21,8 +21,6 @@ elif [ -f ~/.tmux.conf ]; then
 fi
 
 mkdir -p ~/.config/nvim
-mkdir -p ~/.vim/tmp
-mkdir -p ~/.vim/backup
 
 # Copy files to home directory
 cp -r .zsh_custom ~

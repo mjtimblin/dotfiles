@@ -68,8 +68,26 @@ set tabstop=3
 set shiftwidth=1
 set expandtab!
 
-set swapfile
-set dir=~/.vim/tmp
+set undofile
+set undolevels=1000         " How many undos
+set undoreload=10000        " number of lines to save for undo
+
+set backup                        " enable backups
+set swapfile                      " enable swaps
+set undodir=$HOME/.vim/tmp/undo     " undo files
+set backupdir=$HOME/.vim/tmp/backup " backups
+set directory=$HOME/.vim/tmp/swap   " swap files
+
+" Make those folders automatically if they don't already exist.
+if !isdirectory(expand(&undodir))
+    call mkdir(expand(&undodir), "p")
+endif
+if !isdirectory(expand(&backupdir))
+    call mkdir(expand(&backupdir), "p")
+endif
+if !isdirectory(expand(&directory))
+    call mkdir(expand(&directory), "p")
+endif
 
 " }}}
 
@@ -161,14 +179,6 @@ augroup reload_vimrc
   autocmd!
   autocmd! BufWritePost $MYVIMRC source % | echom "Reloaded " . $MYVIMRC | redraw
 augroup END
-
-" If Vim version is equal to or greater than 7.3 enable undofile.
-" This allows you to undo changes to a file even after saving it.
-if version >= 703
-  set undodir=~/.vim/backup
-  set undofile
-  set undoreload=10000
-endif
 
 " You can split a window into sections by typing `:split` or `:vsplit`.
 " Display cursorline and cursorcolumn ONLY in active window.
