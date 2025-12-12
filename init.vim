@@ -65,6 +65,9 @@ set tabstop=3
 set shiftwidth=1
 set expandtab!
 
+set swapfile
+set dir=~/.vim/tmp
+
 " }}}
 
 
