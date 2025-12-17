@@ -28,7 +28,7 @@ ZSH_PLUGINS=(
 
 if [[ "$PLATFORM" == "macos" ]]; then
   ZSH_PLUGINS+=( "macos" )  # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/macos
-elif [[ "$PLATFORM" == "linux" ]]; then
+elif [[ "$PLATFORM" == "linux" ]] && [[ $(uname -v) = *"Ubuntu"* ]]; then
   ZSH_PLUGINS+=( "ubuntu" )  # https://github.com/ohmyzsh/ohmyzsh/tree/master/plugins/ubuntu
 fi
 
