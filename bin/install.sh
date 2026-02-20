@@ -21,6 +21,7 @@ elif [ -f ~/.tmux.conf ]; then
 fi
 
 mkdir -p ~/.config/nvim
+mkdir -p ~/.config/kilo
 
 # Copy files to home directory
 cp -r .zsh_custom ~
@@ -31,6 +32,7 @@ cp .vimrc ~
 cp init.vim ~/.config/nvim/ 
 ln -s $PWD/.tmux/.tmux.conf ~
 cp .tmux.conf.local ~
+cp -r kilo/* ~/.config/kilo/
 
 # Create .shell_paths and .shell_local if they don't exist
 touch ~/.shell_config/shell_paths
