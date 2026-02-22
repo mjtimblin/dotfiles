@@ -3,7 +3,7 @@
 Files in the list contain sensitive data, they MUST NOT be read
 
 - .env
-- .env.*
+- .env.* (except .env.example and .env.skeleton)
 - *.env
 - credentials.json
 - **/id_rsa
