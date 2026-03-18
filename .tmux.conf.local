@@ -409,6 +409,8 @@ tmux_conf_urlscan_options="--compact --dedupe"
 
 set -g default-terminal "xterm-256color"
 
+set -g default-shell "/bin/zsh"
+
 # Use left and right arrow keys to move the current window
 bind Left swap-window -t -1\; select-window -t -1
 bind Right swap-window -t +1\; select-window -t +1
