@@ -1,0 +1,14 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "plugin": [
+    "@slkiser/opencode-quota",
+  ],
+  "experimental": {
+    "quotaToast": {
+      "enabledProviders": ["openai", "zai"],
+      "minIntervalMs": 300000, // 5 minutes between fetches
+      "toastDurationMs": 10000, // Toast shows for 10 seconds
+    },
+  },
+}
+
