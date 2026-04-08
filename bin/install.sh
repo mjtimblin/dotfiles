@@ -22,6 +22,7 @@ fi
 
 mkdir -p ~/.config/nvim
 mkdir -p ~/.config/opencode
+mkdir -p ~/.agents
 
 # Copy files to home directory
 cp -r .zsh_custom ~
@@ -33,6 +34,7 @@ cp init.vim ~/.config/nvim/
 ln -s $PWD/.tmux/.tmux.conf ~
 cp .tmux.conf.local ~
 cp -r opencode/* ~/.config/opencode/
+cp -r agents/* ~/.agents
 
 # Create .shell_paths and .shell_local if they don't exist
 touch ~/.shell_config/shell_paths
