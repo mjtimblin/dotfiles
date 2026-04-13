@@ -4,6 +4,7 @@
     "@slkiser/opencode-quota@2.16.0",
     "@tarquinen/opencode-dcp@3.1.9",
     "@plannotator/opencode@0.17.10",
+    "@cortexkit/aft-opencode@0.11.5",
   ],
   "experimental": {
     "quotaToast": {
