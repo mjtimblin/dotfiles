@@ -5,6 +5,7 @@
     "@tarquinen/opencode-dcp@3.1.9",
     "@plannotator/opencode@0.19.1",
     "@cortexkit/aft-opencode@0.16.1",
+    "opencode-auto-resume@1.0.10",
   ],
   "experimental": {
     "quotaToast": {
