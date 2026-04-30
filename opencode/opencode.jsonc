@@ -1,16 +1,10 @@
 {
   "$schema": "https://opencode.ai/config.json",
   "plugin": [
-    "@slkiser/opencode-quota@3.4.0",
-    "@tarquinen/opencode-dcp@3.1.9",
-    "@plannotator/opencode@0.19.3",
-    "@cortexkit/aft-opencode@0.17.3",
-    ["opencode-auto-resume@1.0.10", {
-      "chunkTimeoutMs": 45000,
-      "maxRetries": 3,
-      "subagentWaitMs": 15000,
-      "loopWindowMs": 600000,
-    }],
+    "@slkiser/opencode-quota@3.3.0",
+    "@tarquinen/opencode-dcp@3.1.3",
+    "@plannotator/opencode@0.17.3",
+    "@cortexkit/aft-opencode@0.16.1",
   ],
   "experimental": {
     "quotaToast": {
