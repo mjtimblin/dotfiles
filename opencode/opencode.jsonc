@@ -7,9 +7,9 @@
     }
   },
   "plugin": [
-    "@slkiser/opencode-quota@3.6.2",
-    "@tarquinen/opencode-dcp@3.1.9",
-    "@plannotator/opencode@0.19.7",
+    "@slkiser/opencode-quota@3.8.2",
+    "@tarquinen/opencode-dcp@3.1.12",
+    "@plannotator/opencode@0.19.14",
     "@cortexkit/aft-opencode@0.21.0",
   ],
   "experimental": {
