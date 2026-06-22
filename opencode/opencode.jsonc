@@ -7,10 +7,10 @@
     }
   },
   "plugin": [
-    "@slkiser/opencode-quota@3.8.7",
-    "@tarquinen/opencode-dcp@3.1.12",
-    "@cortexkit/aft-opencode@0.31.1",
-    ["@plannotator/opencode@0.19.23", {
+    "@slkiser/opencode-quota@3.10.1",
+    "@tarquinen/opencode-dcp@3.1.13",
+    "@cortexkit/aft-opencode@0.39.4",
+    ["@plannotator/opencode@0.21.1", {
       "workflow": "plan-agent",
       "planningAgents": ["plan"]
     }],
