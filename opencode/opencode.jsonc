@@ -7,20 +7,12 @@
     }
   },
   "plugin": [
-    "@slkiser/opencode-quota@4.5.0",
-    "@tarquinen/opencode-dcp@3.1.14",
-    "@cortexkit/aft-opencode@0.49.0",
-    ["@plannotator/opencode@0.25.1", {
+    "@tarquinen/opencode-dcp@3.1.15",
+    "@cortexkit/aft-opencode@0.51.2",
+    ["@plannotator/opencode@0.27.4", {
       "workflow": "plan-agent",
       "planningAgents": ["plan"]
     }],
-  ],
-  "experimental": {
-    "quotaToast": {
-      "enabledProviders": ["openai", "zai"],
-      "minIntervalMs": 300000, // 5 minutes between fetches
-      "toastDurationMs": 10000, // Toast shows for 10 seconds
-    },
-  },
+  ]
 }
 
