@@ -36,21 +36,6 @@ cp .tmux.conf.local ~
 cp -r opencode/* ~/.config/opencode/
 cp -r agents/* ~/.agents
 
-
-# Install opencode-go-multi-auth
-if [ ! -d ~/.config/opencode/opencode-go-multi-auth ]; then
-  git clone https://github.com/Rishabh-Bajpai/opencode-go-multi-auth.git ~/.config/opencode/opencode-go-multi-auth
-  cd ~/.config/opencode/opencode-go-multi-auth
-  npm install
-  npm run build
-  cd $SCRIPT_DIR/..
-
-  mkdir -p ~/.config/opencode/plugins
-  cat > ~/.config/opencode/plugins/opencode-go-multi-auth.js<<EOF
-export { default, server, pluginModule } from "/home/$USER/opencode/opencode-go-multi-auth/dist/opencode-plugin.js"
-EOF
-fi
-
 # Create .shell_paths and .shell_local if they don't exist
 touch ~/.shell_config/shell_paths
 touch ~/.shell_config/shell_local
