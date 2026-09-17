@@ -8,8 +8,10 @@ git pull
 git submodule update --init --recursive
 
 if not exist "%USERPROFILE%\.config\opencode" mkdir "%USERPROFILE%\.config\opencode"
+if not exist "%USERPRODILE%\.config\cortexkit" mkdir "$USERPROFILE%\.config\cortexkit"
 if not exist "%USERPROFILE%\.agents" mkdir "%USERPROFILE%\.agents"
 
-xcopy /E /Y /Q "%CD%\opencode\*" "%USERPROFILE%\.config\opencode\"
+xcopy /E /Y /Q "%CD%\config\opencode\*" "%USERPROFILE%\.config\opencode\"
+xcopy /E /Y /Q "%CD%\config\cortexkit\*" "%USERPROFILE%\.config\cortexkit\"
 xcopy /E /Y /Q "%CD%\agents\*" "%USERPROFILE%\.agents\"
 

@@ -22,6 +22,7 @@ fi
 
 mkdir -p ~/.config/nvim
 mkdir -p ~/.config/opencode
+mkdir -p ~/.config/cortexkit
 mkdir -p ~/.agents
 
 # Copy files to home directory
@@ -33,7 +34,8 @@ cp .vimrc ~
 cp init.vim ~/.config/nvim/ 
 ln -s $PWD/.tmux/.tmux.conf ~
 cp .tmux.conf.local ~
-cp -r opencode/* ~/.config/opencode/
+cp -r config/opencode/* ~/.config/opencode/
+cp -r config/cortexkit/* ~/.config/cortexkit/
 cp -r agents/* ~/.agents
 
 # Create .shell_paths and .shell_local if they don't exist
