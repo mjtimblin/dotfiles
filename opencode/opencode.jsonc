@@ -8,8 +8,8 @@
   },
   "plugin": [
     "@tarquinen/opencode-dcp@3.1.15",
-    "@cortexkit/aft-opencode@0.51.2",
-    ["@plannotator/opencode@0.27.4", {
+    "@cortexkit/aft-opencode@0.56.1",
+    ["@plannotator/opencode@0.27.15", {
       "workflow": "plan-agent",
       "planningAgents": ["plan"]
     }],
