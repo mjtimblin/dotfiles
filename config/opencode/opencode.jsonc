@@ -13,6 +13,16 @@
       "workflow": "plan-agent",
       "planningAgents": ["plan"]
     }],
-  ]
+  ],
+  "provider": {
+    "litellm": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LiteLLM",
+      "options": {
+        "baseURL": ""
+      },
+      "models": {}
+    }
+  }
 }
 

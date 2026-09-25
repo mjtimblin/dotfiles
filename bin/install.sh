@@ -42,3 +42,5 @@ cp -r agents/* ~/.agents
 touch ~/.shell_config/shell_paths
 touch ~/.shell_config/shell_local
 
+~/.config/opencode/update_litellm_models.sh ~/.config/opencode/opencode.jsonc
+
