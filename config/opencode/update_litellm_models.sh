@@ -10,7 +10,7 @@
 #   ./update_litellm_models.sh [path/to/opencode.jsonc]
 #
 # Environment:
-#   LITELLM_MASTER_KEY  (required) API key for the LiteLLM proxy
+#   LITELLM_API_KEY     (required) API key for the LiteLLM proxy
 #   LITELLM_BASE_URL    (optional) override the baseURL; it is also written into
 #                       the config's provider.litellm.options.baseURL
 #
@@ -18,7 +18,7 @@ set -euo pipefail
 
 die() { echo "error: $*" >&2; exit 1; }
 
-: "${LITELLM_MASTER_KEY:?LITELLM_MASTER_KEY is not set}"
+: "${LITELLM_API_KEY:?LITELLM_API_KEY is not set}"
 for cmd in curl node npm; do
   command -v "$cmd" >/dev/null 2>&1 || die "'$cmd' is required but not installed"
 done
@@ -66,7 +66,7 @@ base_url="${base_url%/}"
 # Step 2: fetch the models from LiteLLM.
 echo "Fetching models from $base_url/models ..."
 MODELS_RESPONSE="$(curl -fsS --max-time 20 \
-  -H "Authorization: Bearer $LITELLM_MASTER_KEY" \
+  -H "Authorization: Bearer $LITELLM_API_KEY" \
   "$base_url/models")" || die "request to $base_url/models failed"
 export MODELS_RESPONSE BASE_URL_OVERRIDE="${LITELLM_BASE_URL:+$base_url}"
 

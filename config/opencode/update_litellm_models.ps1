@@ -14,7 +14,7 @@
 #   ./update_litellm_models.ps1 [path/to/opencode.jsonc]
 #
 # Environment:
-#   LITELLM_MASTER_KEY  (required) API key for the LiteLLM proxy
+#   LITELLM_API_KEY     (required) API key for the LiteLLM proxy
 #   LITELLM_BASE_URL    (optional) override the baseURL; it is also written into
 #                       the config's provider.litellm.options.baseURL
 #
@@ -35,8 +35,8 @@ function Die {
 # ---------------------------------------------------------------------------
 # Prerequisites
 # ---------------------------------------------------------------------------
-if (-not $env:LITELLM_MASTER_KEY) {
-    Die "LITELLM_MASTER_KEY is not set"
+if (-not $env:LITELLM_API_KEY) {
+    Die "LITELLM_API_KEY is not set"
 }
 foreach ($cmd in @("node", "npm")) {
     if (-not (Get-Command $cmd -ErrorAction SilentlyContinue)) {
@@ -115,7 +115,7 @@ Write-Host "Fetching models from $base_url/models ..."
 try {
     $response = Invoke-WebRequest `
         -Uri "$base_url/models" `
-        -Headers @{ Authorization = "Bearer $env:LITELLM_MASTER_KEY" } `
+        -Headers @{ Authorization = "Bearer $env:LITELLM_API_KEY" } `
         -TimeoutSec 20
     $modelsResponse = $response.Content
 } catch {
