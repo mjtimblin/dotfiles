@@ -4,12 +4,16 @@
     "chrome-devtools": {
       "type": "local",
       "command": ["npx", "-y", "chrome-devtools-mcp@latest"]
-    }
+    },
+    "kagi": {
+      "type": "local",
+      "command": ["npx", "-y", "kagi-cli", "mcp"]
+    },
   },
   "plugin": [
-    "@tarquinen/opencode-dcp@3.1.15",
-    "@cortexkit/aft-opencode@0.56.1",
-    ["@plannotator/opencode@0.27.15", {
+    "@tarquinen/opencode-dcp@3.2.0",
+    "@cortexkit/aft-opencode@0.58.0",
+    ["@plannotator/opencode@0.27.21", {
       "workflow": "plan-agent",
       "planningAgents": ["plan"]
     }],
