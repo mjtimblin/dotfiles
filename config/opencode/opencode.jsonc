@@ -16,7 +16,7 @@
   "plugin": [
     "@tarquinen/opencode-dcp@3.2.0",
     "@cortexkit/aft-opencode@0.58.2",
-    ["@plannotator/opencode@0.27.24", {
+    ["@plannotator/opencode@0.28.3", {
       "workflow": "plan-agent",
       "planningAgents": ["plan"]
     }],
