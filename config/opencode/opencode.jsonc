@@ -21,6 +21,7 @@
       "planningAgents": ["plan"]
     }],
   ],
+  "disabled_providers": ["opencode"],
   "provider": {
     "litellm": {
       "npm": "@ai-sdk/openai-compatible",
