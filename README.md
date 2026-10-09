@@ -6,6 +6,10 @@ This repository currently contains dotfiles, config, themes, and plugins for bas
 
 To install, clone the repository and run `./bin/install.sh`
 
+### OpenCode
+
+The opencode configuration (opencode config, cortexkit config, and agent skills) can be installed or refreshed by running `./bin/install_opencode.sh` (or `bin\install_opencode.bat` on Windows).
+
 ## Updating Config
 
 ### Local Config
