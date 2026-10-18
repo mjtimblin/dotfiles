@@ -36,6 +36,8 @@ cp .tmux.conf.local ~
 touch ~/.shell_config/shell_paths
 touch ~/.shell_config/shell_local
 
-# Sync the LiteLLM models (requires LITELLM_API_KEY)
-~/.config/opencode/update_litellm_models.sh ~/.config/opencode/opencode.jsonc
+# Sync the LiteLLM models (requires LITELLM_API_KEY). Use the script from the
+# repo rather than the installed copy so a fresh `git pull` takes effect here
+# too; install_opencode.sh is what refreshes the installed config.
+"$PWD/config/opencode/update_litellm_models.sh" ~/.config/opencode/opencode.jsonc
 

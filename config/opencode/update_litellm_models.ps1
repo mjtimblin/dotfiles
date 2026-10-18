@@ -3,6 +3,10 @@
 # Sync the models list of a LiteLLM provider in opencode.json / opencode.jsonc
 # with the models currently available on the LiteLLM proxy.
 #
+# Both config layouts are supported: the native V2 "providers" map (plural,
+# with settings.baseURL) and the legacy V1 "provider" map (singular, with
+# options.baseURL). Every litellm provider block found is kept in sync.
+#
 # Each model is written with its modelID, display name and the context/output
 # limits reported by LiteLLM (max_input_tokens / max_output_tokens), e.g.:
 #
@@ -25,7 +29,8 @@
 # Environment:
 #   LITELLM_API_KEY     (required) API key for the LiteLLM proxy
 #   LITELLM_BASE_URL    (optional) override the baseURL; it is also written into
-#                       the config's provider.litellm.options.baseURL
+#                       the config's provider baseURL (V2 providers.litellm.settings
+#                       or V1 provider.litellm.options)
 #
 [CmdletBinding()]
 param(
@@ -115,7 +120,7 @@ if (errors.length) {
   }
   process.exit(1);
 }
-process.stdout.write(cfg?.provider?.litellm?.options?.baseURL ?? "");
+  process.stdout.write(cfg?.providers?.litellm?.settings?.baseURL ?? cfg?.provider?.litellm?.options?.baseURL ?? "");
 '@
 
 if ($env:LITELLM_BASE_URL) {
@@ -124,7 +129,7 @@ if ($env:LITELLM_BASE_URL) {
     $base_url = (& node -e $readBaseUrl)
     if ($LASTEXITCODE -ne 0) { Die "could not parse $CONFIG" }
 }
-if (-not $base_url) { Die "no baseURL found at provider.litellm.options.baseURL" }
+if (-not $base_url) { Die "no baseURL found at providers.litellm.settings.baseURL or provider.litellm.options.baseURL" }
 $base_url = $base_url.TrimEnd("/")
 
 # ---------------------------------------------------------------------------
@@ -207,62 +212,107 @@ if (rawInfo) {
 
 const original = fs.readFileSync(CONFIG, "utf8");
 const opts = { allowTrailingComma: true, disallowComments: false };
-const provider = parse(original, [], opts)?.provider?.litellm ?? {};
-const existing = provider.models ?? {};
-const oldBaseURL = provider.options?.baseURL;
-const baseChanged = !!BASE_URL_OVERRIDE && BASE_URL_OVERRIDE !== oldBaseURL;
+const cfg = parse(original, [], opts) ?? {};
+
+// OpenCode V2 uses a native "providers" map (plural) with settings.baseURL;
+// V1 uses "provider" (singular) with options.baseURL. When both are present
+// the native V2 entry takes precedence, so keep every block that exists in sync.
+const targets = [];
+const v2 = cfg?.providers?.litellm;
+if (v2 && typeof v2 === "object") {
+  targets.push({
+    label: "providers.litellm",
+    modelsPath: ["providers", "litellm", "models"],
+    basePath: ["providers", "litellm", "settings", "baseURL"],
+    models: v2.models ?? {},
+    oldBaseURL: v2.settings?.baseURL,
+  });
+}
+const v1 = cfg?.provider?.litellm;
+if (v1 && typeof v1 === "object") {
+  targets.push({
+    label: "provider.litellm",
+    modelsPath: ["provider", "litellm", "models"],
+    basePath: ["provider", "litellm", "options", "baseURL"],
+    models: v1.models ?? {},
+    oldBaseURL: v1.options?.baseURL,
+  });
+}
+// Nothing to sync yet: fall back to creating a V1 provider block.
+if (!targets.length) {
+  targets.push({
+    label: "provider.litellm",
+    modelsPath: ["provider", "litellm", "models"],
+    basePath: ["provider", "litellm", "options", "baseURL"],
+    models: {},
+    oldBaseURL: undefined,
+  });
+}
 
 // Match the file's indentation for any new lines.
 const indent = original.match(/^([ \t]+)"/m)?.[1] ?? "  ";
 const fmt = { formattingOptions: { insertSpaces: !indent.includes("\t"), tabSize: indent.length } };
 
-const added = ids.filter(id => !(id in existing));
-const removed = Object.keys(existing).filter(id => !ids.includes(id));
-
 const sameLimit = (a, b) => !!a && !!b && a.context === b.context && a.output === b.output;
 
-// Existing entries that are missing modelID/name or whose limits changed.
-const changedExisting = [];
-for (const id of ids) {
-  if (!(id in existing)) continue;
-  const cur = existing[id] && typeof existing[id] === "object" ? existing[id] : {};
-  const limit = limits.get(id);
-  const patch = {
-    id,
-    modelID: cur.modelID !== id,
-    name: cur.name !== id,
-    limit: limit !== undefined && !sameLimit(cur.limit, limit) ? limit : undefined,
-  };
-  if (patch.modelID || patch.name || patch.limit) changedExisting.push(patch);
+let text = original;
+let changed = false;
+const report = [];
+
+for (const t of targets) {
+  const existing = t.models;
+  const baseChanged = !!BASE_URL_OVERRIDE && BASE_URL_OVERRIDE !== t.oldBaseURL;
+
+  const added = ids.filter(id => !(id in existing));
+  const removed = Object.keys(existing).filter(id => !ids.includes(id));
+
+  // Existing entries that are missing modelID/name or whose limits changed.
+  const changedExisting = [];
+  for (const id of ids) {
+    if (!(id in existing)) continue;
+    const cur = existing[id] && typeof existing[id] === "object" ? existing[id] : {};
+    const limit = limits.get(id);
+    const patch = {
+      id,
+      modelID: cur.modelID !== id,
+      name: cur.name !== id,
+      limit: limit !== undefined && !sameLimit(cur.limit, limit) ? limit : undefined,
+    };
+    if (patch.modelID || patch.name || patch.limit) changedExisting.push(patch);
+  }
+
+  if (!added.length && !removed.length && !baseChanged && !changedExisting.length) continue;
+  changed = true;
+
+  if (targets.length > 1) report.push(`${t.label}:`);
+  if (baseChanged) {
+    text = applyEdits(text, modify(text, t.basePath, BASE_URL_OVERRIDE, fmt));
+    report.push(`baseURL: ${t.oldBaseURL ?? "(unset)"} -> ${BASE_URL_OVERRIDE}`);
+  }
+  for (const id of removed) text = applyEdits(text, modify(text, [...t.modelsPath, id], undefined, fmt));
+  for (const id of added) {
+    const entry = { modelID: id, name: id };
+    const limit = limits.get(id);
+    if (limit) entry.limit = limit;
+    text = applyEdits(text, modify(text, [...t.modelsPath, id], entry, fmt));
+  }
+  for (const u of changedExisting) {
+    if (u.modelID) text = applyEdits(text, modify(text, [...t.modelsPath, u.id, "modelID"], u.id, fmt));
+    if (u.name)    text = applyEdits(text, modify(text, [...t.modelsPath, u.id, "name"], u.id, fmt));
+    if (u.limit)   text = applyEdits(text, modify(text, [...t.modelsPath, u.id, "limit"], u.limit, fmt));
+  }
+
+  if (added.length)    report.push("Added:\n" + added.map(i => "  + " + i).join("\n"));
+  if (removed.length)  report.push("Removed:\n" + removed.map(i => "  - " + i).join("\n"));
+  if (changedExisting.length) report.push("Updated:\n" + changedExisting.map(u => "  ~ " + u.id).join("\n"));
 }
 
-if (!added.length && !removed.length && !baseChanged && !changedExisting.length) {
+if (!changed) {
   console.log(`Models already up to date (${ids.length} models).`);
   process.exit(0);
 }
 
-let text = original;
-if (baseChanged) {
-  text = applyEdits(text, modify(text, ["provider", "litellm", "options", "baseURL"], BASE_URL_OVERRIDE, fmt));
-}
-const path = ["provider", "litellm", "models"];
-for (const id of removed) text = applyEdits(text, modify(text, [...path, id], undefined, fmt));
-for (const id of added) {
-  const entry = { modelID: id, name: id };
-  const limit = limits.get(id);
-  if (limit) entry.limit = limit;
-  text = applyEdits(text, modify(text, [...path, id], entry, fmt));
-}
-for (const u of changedExisting) {
-  if (u.modelID) text = applyEdits(text, modify(text, [...path, u.id, "modelID"], u.id, fmt));
-  if (u.name)    text = applyEdits(text, modify(text, [...path, u.id, "name"], u.id, fmt));
-  if (u.limit)   text = applyEdits(text, modify(text, [...path, u.id, "limit"], u.limit, fmt));
-}
-
-if (baseChanged)     console.log(`baseURL: ${oldBaseURL ?? "(unset)"} -> ${BASE_URL_OVERRIDE}`);
-if (added.length)    console.log("Added:\n" + added.map(i => "  + " + i).join("\n"));
-if (removed.length)  console.log("Removed:\n" + removed.map(i => "  - " + i).join("\n"));
-if (changedExisting.length) console.log("Updated:\n" + changedExisting.map(u => "  ~ " + u.id).join("\n"));
+console.log(report.join("\n"));
 
 // Back up, then write atomically.
 fs.copyFileSync(CONFIG, CONFIG + ".bak");
