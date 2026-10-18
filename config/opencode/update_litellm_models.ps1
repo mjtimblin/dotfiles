@@ -3,6 +3,15 @@
 # Sync the models list of a LiteLLM provider in opencode.json / opencode.jsonc
 # with the models currently available on the LiteLLM proxy.
 #
+# Each model is written with its modelID, display name and the context/output
+# limits reported by LiteLLM (max_input_tokens / max_output_tokens), e.g.:
+#
+#   "deepseek-v4.1-flash": {
+#     "modelID": "deepseek-v4.1-flash",
+#     "name": "deepseek-v4.1-flash",
+#     "limit": { "context": 1000000, "output": 384000 }
+#   }
+#
 # Comments, trailing commas and formatting in the config are preserved:
 # only the individual model entries that changed are edited.
 #
@@ -29,6 +38,9 @@ $ErrorActionPreference = "Stop"
 function Die {
     param([string]$Message)
     [Console]::Error.WriteLine("error: $Message")
+    if ($script:WORK -and (Test-Path -LiteralPath $script:WORK)) {
+        Remove-Item -Recurse -Force $script:WORK -ErrorAction SilentlyContinue
+    }
     exit 1
 }
 
@@ -78,6 +90,13 @@ if (-not (Test-Path -LiteralPath $JsoncParserDir -PathType Container)) {
 }
 $env:NODE_PATH = Join-Path $CACHE "node_modules"
 
+# Scratch space for the (potentially large) LiteLLM responses. They are passed
+# to node as files: the /model/info payload can exceed the environment size cap.
+$script:WORK = Join-Path ([System.IO.Path]::GetTempPath()) ([System.IO.Path]::GetRandomFileName())
+New-Item -ItemType Directory -Force -Path $script:WORK | Out-Null
+$ModelsFile = Join-Path $script:WORK "models.json"
+$InfoFile = Join-Path $script:WORK "model_info.json"
+
 $env:CONFIG = $CONFIG
 
 # ---------------------------------------------------------------------------
@@ -113,15 +132,30 @@ $base_url = $base_url.TrimEnd("/")
 # ---------------------------------------------------------------------------
 Write-Host "Fetching models from $base_url/models ..."
 try {
-    $response = Invoke-WebRequest `
+    Invoke-WebRequest `
         -Uri "$base_url/models" `
         -Headers @{ Authorization = "Bearer $env:LITELLM_API_KEY" } `
-        -TimeoutSec 20
-    $modelsResponse = $response.Content
+        -TimeoutSec 20 `
+        -OutFile $ModelsFile
 } catch {
     Die "request to $base_url/models failed"
 }
-$env:MODELS_RESPONSE = $modelsResponse
+
+# Step 2b: fetch per-model info for the context window / max output tokens.
+Write-Host "Fetching model info from $base_url/model/info ..."
+try {
+    Invoke-WebRequest `
+        -Uri "$base_url/model/info" `
+        -Headers @{ Authorization = "Bearer $env:LITELLM_API_KEY" } `
+        -TimeoutSec 20 `
+        -OutFile $InfoFile
+} catch {
+    Write-Warning "could not fetch $base_url/model/info; limits will not be populated"
+    Set-Content -LiteralPath $InfoFile -Value "{}" -NoNewline
+}
+
+$env:MODELS_FILE = $ModelsFile
+$env:MODEL_INFO_FILE = $InfoFile
 if ($env:LITELLM_BASE_URL) {
     $env:BASE_URL_OVERRIDE = $base_url
 } else {
@@ -134,18 +168,41 @@ if ($env:LITELLM_BASE_URL) {
 $applyEdits = @'
 const fs = require("fs");
 const { parse, modify, applyEdits } = require("jsonc-parser");
-const { CONFIG, MODELS_RESPONSE, BASE_URL_OVERRIDE } = process.env;
+const { CONFIG, MODELS_FILE, MODEL_INFO_FILE, BASE_URL_OVERRIDE } = process.env;
 
 let ids;
 try {
-  ids = [...new Set(JSON.parse(MODELS_RESPONSE).data.map(m => m.id))].sort();
+  ids = [...new Set(JSON.parse(fs.readFileSync(MODELS_FILE, "utf8")).data.map(m => m.id))].sort();
 } catch {
-  console.error("error: unexpected response from LiteLLM: " + MODELS_RESPONSE);
+  console.error("error: unexpected response from LiteLLM: " + fs.readFileSync(MODELS_FILE, "utf8"));
   process.exit(1);
 }
 if (!ids.length) {
   console.error("error: LiteLLM returned no models; leaving config untouched");
   process.exit(1);
+}
+
+// Build a model name -> limit map from /model/info. LiteLLM reports the
+// context window as max_input_tokens and the output cap as max_output_tokens.
+const toInt = v => (typeof v === "number" && Number.isFinite(v) ? Math.round(v) : undefined);
+const limits = new Map();
+let rawInfo = "";
+try { rawInfo = fs.readFileSync(MODEL_INFO_FILE, "utf8").trim(); } catch {}
+if (rawInfo) {
+  try {
+    for (const m of JSON.parse(rawInfo).data ?? []) {
+      const info = m?.model_info ?? {};
+      const context = toInt(info.max_input_tokens);
+      const output = toInt(info.max_output_tokens);
+      if (context === undefined && output === undefined) continue;
+      const limit = {};
+      if (context !== undefined) limit.context = context;
+      if (output !== undefined) limit.output = output;
+      if (typeof m?.model_name === "string") limits.set(m.model_name, limit);
+    }
+  } catch {
+    console.error("warning: could not parse /model/info response; limits will not be populated");
+  }
 }
 
 const original = fs.readFileSync(CONFIG, "utf8");
@@ -162,7 +219,24 @@ const fmt = { formattingOptions: { insertSpaces: !indent.includes("\t"), tabSize
 const added = ids.filter(id => !(id in existing));
 const removed = Object.keys(existing).filter(id => !ids.includes(id));
 
-if (!added.length && !removed.length && !baseChanged) {
+const sameLimit = (a, b) => !!a && !!b && a.context === b.context && a.output === b.output;
+
+// Existing entries that are missing modelID/name or whose limits changed.
+const changedExisting = [];
+for (const id of ids) {
+  if (!(id in existing)) continue;
+  const cur = existing[id] && typeof existing[id] === "object" ? existing[id] : {};
+  const limit = limits.get(id);
+  const patch = {
+    id,
+    modelID: cur.modelID !== id,
+    name: cur.name !== id,
+    limit: limit !== undefined && !sameLimit(cur.limit, limit) ? limit : undefined,
+  };
+  if (patch.modelID || patch.name || patch.limit) changedExisting.push(patch);
+}
+
+if (!added.length && !removed.length && !baseChanged && !changedExisting.length) {
   console.log(`Models already up to date (${ids.length} models).`);
   process.exit(0);
 }
@@ -173,11 +247,22 @@ if (baseChanged) {
 }
 const path = ["provider", "litellm", "models"];
 for (const id of removed) text = applyEdits(text, modify(text, [...path, id], undefined, fmt));
-for (const id of added)   text = applyEdits(text, modify(text, [...path, id], { name: id }, fmt));
+for (const id of added) {
+  const entry = { modelID: id, name: id };
+  const limit = limits.get(id);
+  if (limit) entry.limit = limit;
+  text = applyEdits(text, modify(text, [...path, id], entry, fmt));
+}
+for (const u of changedExisting) {
+  if (u.modelID) text = applyEdits(text, modify(text, [...path, u.id, "modelID"], u.id, fmt));
+  if (u.name)    text = applyEdits(text, modify(text, [...path, u.id, "name"], u.id, fmt));
+  if (u.limit)   text = applyEdits(text, modify(text, [...path, u.id, "limit"], u.limit, fmt));
+}
 
-if (baseChanged)    console.log(`baseURL: ${oldBaseURL ?? "(unset)"} -> ${BASE_URL_OVERRIDE}`);
-if (added.length)   console.log("Added:\n" + added.map(i => "  + " + i).join("\n"));
-if (removed.length) console.log("Removed:\n" + removed.map(i => "  - " + i).join("\n"));
+if (baseChanged)     console.log(`baseURL: ${oldBaseURL ?? "(unset)"} -> ${BASE_URL_OVERRIDE}`);
+if (added.length)    console.log("Added:\n" + added.map(i => "  + " + i).join("\n"));
+if (removed.length)  console.log("Removed:\n" + removed.map(i => "  - " + i).join("\n"));
+if (changedExisting.length) console.log("Updated:\n" + changedExisting.map(u => "  ~ " + u.id).join("\n"));
 
 // Back up, then write atomically.
 fs.copyFileSync(CONFIG, CONFIG + ".bak");
@@ -187,6 +272,10 @@ fs.renameSync(tmp, CONFIG);
 console.log(`Updated ${CONFIG} (backup at ${CONFIG}.bak)`);
 '@
 
-& node -e $applyEdits
-exit $LASTEXITCODE
-
+try {
+    & node -e $applyEdits
+    $exitCode = $LASTEXITCODE
+} finally {
+    Remove-Item -Recurse -Force $script:WORK -ErrorAction SilentlyContinue
+}
+exit $exitCode
