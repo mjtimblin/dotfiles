@@ -20,7 +20,6 @@
       "workflow": "plan-agent",
       "planningAgents": ["plan"]
     }],
-    "./plugins/opencode-search-providers",
   ],
   "disabled_providers": ["opencode"],
   "provider": {
