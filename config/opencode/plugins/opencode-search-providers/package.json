@@ -1,0 +1,61 @@
+{
+  "name": "@openchamber/opencode-search-providers",
+  "version": "1.2.0",
+  "description": "Web search providers for OpenCode's built-in websearch tool: SearXNG, Brave Search, Kagi, Perplexity Search, Linkup and Serper.",
+  "license": "MIT",
+  "type": "module",
+  "main": "./opencode-search-providers.js",
+  "module": "./opencode-search-providers.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./opencode-search-providers.js",
+      "default": "./opencode-search-providers.js"
+    }
+  },
+  "files": [
+    "dist",
+    "opencode-search-providers.js",
+    "server.js"
+  ],
+  "scripts": {
+    "prebuild": "node -e \"require('node:fs').rmSync('dist', { recursive: true, force: true })\"",
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "test": "bun test",
+    "prepublishOnly": "npm run build"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/openchamber/opencode-search-providers.git"
+  },
+  "homepage": "https://github.com/openchamber/opencode-search-providers",
+  "bugs": {
+    "url": "https://github.com/openchamber/opencode-search-providers/issues"
+  },
+  "keywords": [
+    "opencode",
+    "opencode-plugin",
+    "websearch",
+    "web-search",
+    "searxng",
+    "brave-search",
+    "kagi",
+    "perplexity",
+    "linkup",
+    "serper"
+  ],
+  "engines": {
+    "node": ">=20.3"
+  },
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@opencode/plugin": "2.0.31",
+    "@types/bun": "^1.3.11",
+    "@types/node": "^22.15.0",
+    "typescript": "^5.9.3"
+  }
+}

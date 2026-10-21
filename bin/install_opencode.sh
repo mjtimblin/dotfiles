@@ -1,7 +1,7 @@
 #!/bin/bash
 #
 # Set up opencode and its configuration for the current user:
-#   - ~/.config/opencode   (opencode config, rules, model sync scripts)
+#   - ~/.config/opencode   (opencode config, rules, plugins and model sync scripts)
 #   - ~/.config/cortexkit  (cortexkit aft config)
 #   - ~/.agents            (agent skills)
 # Then sync the LiteLLM provider model list.
