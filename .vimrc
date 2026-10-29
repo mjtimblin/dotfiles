@@ -111,7 +111,6 @@ call plug#begin('~/.vim/plugged')
   Plug 'tpope/vim-commentary'
   Plug 'airblade/vim-gitgutter'
   Plug 'editorconfig/editorconfig-vim'
-  Plug 'dezza/vimdirs.vim'
 
   " Themes
   Plug 'NLKNguyen/papercolor-theme'
